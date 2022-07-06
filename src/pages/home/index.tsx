@@ -4,6 +4,7 @@ export default function Home() {
   return (
     <main>
       <Button variant="outlined">Hello World</Button>
+      Hello testing
     </main>
   );
 }
