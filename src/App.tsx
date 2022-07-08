@@ -1,22 +1,23 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import Home from "pages/home";
+import Home from "pages/Home";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import ProtectedRoute from "components/ProtectedRoute";
 import { auth } from "config/firebase";
-import ViewItem from "pages/item/viewItem";
-import SignIn from "pages/auth/signin";
-import SignUp from "pages/auth/signup";
-import EditItem from "pages/item/editItem";
+import ViewItem from "pages/item/ViewItem";
+import SignIn from "pages/auth/SignIn";
+import SignUp from "pages/auth/SignUp";
+import EditPost from "pages/item/EditPost";
 import NotFound from "pages/NotFound";
-import AddItem from "pages/item/AddItem";
+import CreatePost from "pages/item/CreatePost";
+import Layout from "components/Layout";
 
 function App() {
   const location = useLocation();
   const [user, loading, error] = useAuthState(auth);
 
   return (
-    <>
+    <Layout>
       <Routes location={location}>
         {/* Accessible to all */}
         <Route path="/" element={<Home />} />
@@ -26,7 +27,7 @@ function App() {
         <Route
           path="/signIn"
           element={
-            <ProtectedRoute isAllowed={!user}>
+            <ProtectedRoute isAllowed={loading || !user}>
               <SignIn />
             </ProtectedRoute>
           }
@@ -34,7 +35,7 @@ function App() {
         <Route
           path="/signUp"
           element={
-            <ProtectedRoute isAllowed={!user}>
+            <ProtectedRoute isAllowed={loading || !user}>
               <SignUp />
             </ProtectedRoute>
           }
@@ -42,25 +43,25 @@ function App() {
 
         {/* Accessible to logged in users */}
         <Route
-          path="/item/edit/:id"
+          path="/edit/:id"
           element={
-            <ProtectedRoute isAllowed={!!user}>
-              <EditItem />
+            <ProtectedRoute isAllowed={loading || !!user}>
+              <EditPost />
             </ProtectedRoute>
           }
         />
         <Route
-          path="/addItem"
+          path="/create-post"
           element={
-            <ProtectedRoute isAllowed={!!user}>
-              <AddItem />
+            <ProtectedRoute isAllowed={loading || !!user}>
+              <CreatePost />
             </ProtectedRoute>
           }
         />
 
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </>
+    </Layout>
   );
 }
 
