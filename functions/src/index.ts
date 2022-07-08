@@ -12,3 +12,4 @@
 // export const hihi = functions.https.onRequest((req, res) => {
 //   res.send("hi thereddee");
 // });
+export {};
